@@ -47,7 +47,7 @@ const jike = require('./jike')
 
 ## Todo
 
-- [ ] 扫码登录([alexeyten/qr-image](https://github.com/alexeyten/qr-image))
+- [ ] 扫码登录 ([alexeyten/qr-image](https://github.com/alexeyten/qr-image))
 - [ ] 消息通知 ([websockets/ws](https://github.com/websockets/ws) + EventEmitter)
 - [ ] 新动态提醒 (setTimeout 轮询 + EventEmitter)
 
