@@ -92,9 +92,9 @@ const JikeClient = refreshToken => {
 			'COMMENT': 'comments',
 		}
 	
-		if(!message.id) return Promise.reject('Missing data')
-		if(!Object.keys(mapping).filter(key => !limit.length || limit.includes(key)).includes(message.type)) return Promise.reject('Unsupported message')
-		if(message.type === 'COMMENT' && !message.targetType) return Promise.reject('missing data')
+		if(!message.id) return Promise.reject('Missing message id')
+		if(!Object.keys(mapping).filter(key => !limit.length || limit.includes(key)).includes(message.type)) return Promise.reject('Unsupported message type')
+		if(message.type === 'COMMENT' && !message.targetType) return Promise.reject('Missing message targetType')
 		message.urlType = mapping[message.type]
 		return Promise.resolve(message)
 	}
@@ -153,7 +153,7 @@ const JikeClient = refreshToken => {
 			message => collect(message, false),
 		createMyPost:
 			(content, options = {}) => Promise.resolve().then(() => {
-				if(options.link && options.pictures) return Promise.reject('Unsupported post')
+				if(options.link && options.pictures) return Promise.reject('Unsupported post option')
 				let payload = {content}
 				if(options.topic) payload.submitToTopic = options.topic
 				if(options.link) return meta(options.link).then(info => payload.linkInfo = info).then(() => payload)
