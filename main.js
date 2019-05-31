@@ -167,7 +167,7 @@ const JikeClient = refreshToken => {
 					targetId: message.id, targetType: message.type
 				})
 			),
-		addMyComment:
+		createMyComment:
 			(content, message, options = {}) => validate(message).then(message => {
 				let payload = {
 					content, syncToPersonalUpdates: !!options.repost,
@@ -176,7 +176,7 @@ const JikeClient = refreshToken => {
 				}
 				if(options.pictures) return storage(options.pictures).then(keys => payload.pictureKeys = keys).then(() => payload)
 				else return Promise.resolve(payload)
-			}).then(payload => query('POST', constant.endpoint.addComment, payload)),
+			}).then(payload => query('POST', constant.endpoint.createComment, payload)),
 		deleteMyPost:
 			message => validate(message, ['ORIGINAL_POST', 'REPOST']).then(message => query('POST', constant.endpoint.deletePost, {id: message.id})),
 		deleteMyComment:

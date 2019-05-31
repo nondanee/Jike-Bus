@@ -35,7 +35,7 @@ const endpoint = {
     // 'collect_it': '1.0/{_p_}/collect',
     // 'uncollect_it': '1.0/{_p_}/uncollect',
     'createRepost': '1.0/reposts/add',
-    'addComment': '1.0/comments/add',
+    'createComment': '1.0/comments/add',
     'deleteComment': '1.0/comments/remove',
     // search
     'searchTopic': '1.0/users/topics/search',
