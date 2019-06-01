@@ -39,7 +39,7 @@ const form = (data, boundary) => {
 		input.on('end', () => resolve())
 		input.on('error', () => reject())
 	})
-	const chain = (stream, boundary) => {
+	const chain = stream => {
 		let item = file.shift()
 		if(!item) return Promise.resolve()
 		else {
@@ -57,7 +57,7 @@ const form = (data, boundary) => {
 			string.forEach(item => {
 				stream.write([`--${boundary}`, `Content-Disposition: form-data; name="${item.key}"`, '', item.value, ''].join(CRLF))
 			})
-			chain(stream, boundary).then(() => stream.end([`--${boundary}--`, ''].join(CRLF)))
+			chain(stream).then(() => stream.end([`--${boundary}--`, ''].join(CRLF)))
 		}
 	}
 }

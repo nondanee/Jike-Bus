@@ -15,10 +15,10 @@ const JikeClient = refreshToken => {
 		'content-type': 'application/json'
 	}
 
-	const query = (method, path, body) => 
-		request(method, 'https://app.jike.ruguoapp.com/' + path, headers, JSON.stringify(body))
+	const query = (method, path, data) => 
+		request(method, 'https://app.jike.ruguoapp.com/' + path, headers, JSON.stringify(data))
 		.then(response => 
-			response.statusCode === 401 ? refresh().then(() => query(method, path, body)) : response.json()
+			response.statusCode === 401 ? refresh().then(() => query(method, path, data)) : response.json()
 		)
 
 	const refresh = () => 

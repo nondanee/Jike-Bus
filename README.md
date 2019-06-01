@@ -4,16 +4,20 @@ Jike Bus 🚍 是即刻镇的公交专线，有卡刷卡，投币一元。
 
 ## Quick Start
 
+```sh
+$ npm install nondanee/Jike-Bus
+```
+
+> 等 Todo 完成后再发布到 npm, 现阶段可以从 Github repository 安装尝鲜
+
 ```javascript
-const jike = require('./jike')
+const jike = require('jike')
 
 ;(async () => {
     let c = await jike.JikeClient(refreshToken)
     let myProfile = await c.getMyProfile()
-})
+})()
 ```
-
-> 返回类型均为 Promise
 
 ## Usage
 
@@ -21,13 +25,13 @@ const jike = require('./jike')
 
 支持的接口请参考 [Sorosliu1029/Jike-Metro](https://github.com/Sorosliu1029/Jike-Metro) 的 [API 文档](https://www.0x2beace.me/Jike-Metro/)
 
-基本上把 Python 的下划线方法名改成驼峰命名再加上 `await` 就可以了 (部分方法名有所修改)
+基本上把 Python 的下划线方法名改成驼峰命名就行了，返回类型均为 Promise (部分方法名有改动)
 
 分页信息流 `loadMore()`，`loadAll()` 与 Jike-Metro 功能一致 
 
 只是 Web API 请求的简单封装，比较丑陋，不关心返回字段改动 (不固定字段，全看官方心情)
 
-**目前为止还是 0 dependency，之后不得不用库**
+**目前为止还是 0 dependency**
 
 ## Feature
 
@@ -43,7 +47,7 @@ const jike = require('./jike')
 - 根据关键词搜索自己的收藏
 - 获取即刻首页的推荐关注主题列表（不限于首页显示的5个）
 
->  即 Jike-Metro [README](https://github.com/Sorosliu1029/Jike-Metro#jike-metro--乘车体验) 中提到的所有 feature
+>  即 [Jike-Metro 乘车体验](https://github.com/Sorosliu1029/Jike-Metro#jike-metro--乘车体验) 中提到的所有 feature
 
 ## Todo
 
