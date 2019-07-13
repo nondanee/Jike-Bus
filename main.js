@@ -1,4 +1,3 @@
-
 const fs = require('fs')
 const crypto = require('crypto')
 const extension = require('path').extname
@@ -8,14 +7,9 @@ const constant = require('./constant.js')
 
 const JikeClient = refreshToken => {
 
-	const headers = {
-		'platform': 'web',
-		'app-version': '5.3.0',
-		'accept': 'application/json',
-		'content-type': 'application/json'
-	}
+	const headers = Object.assign({}, constant.headers)
 
-	const query = (method, path, data) => 
+	const query = (method, path, data) =>
 		request(method, 'https://app.jike.ruguoapp.com/' + path, headers, JSON.stringify(data))
 		.then(response => 
 			response.statusCode === 401 ? refresh().then(() => query(method, path, data)) : response.json()
@@ -51,6 +45,11 @@ const JikeClient = refreshToken => {
 			).map(data => 
 				request('POST', constant.endpoint.pictureUpload, {'content-type': 'multipart/form-data; boundary=' + boundary}, request.form(data, boundary))
 				.then(response => response.json())
+				.then(body => !body.error ?
+					body : Promise.resolve(JSON.parse(body.error))
+					.then(error => request('POST', error.callback_url, {'content-type': error.callback_bodyType}, error.callback_body))
+					.then(response => response.json())
+				)
 			)
 		))
 		.then(data => data.map(item => item.key))

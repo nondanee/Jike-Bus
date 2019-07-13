@@ -1,3 +1,10 @@
+const headers = {
+    'platform': 'web',
+    'app-version': '5.3.0',
+    'accept': 'application/json',
+    'content-type': 'application/json'
+}
+
 const endpoint = {
     // login
     'createSession': 'sessions.create',
@@ -44,4 +51,4 @@ const endpoint = {
     'recommendedTopic': '1.0/topics/recommendation/list',
 }
 
-module.exports = {endpoint}
+module.exports = {headers, endpoint}

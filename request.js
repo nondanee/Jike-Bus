@@ -6,7 +6,7 @@ const parse = require('url').parse
 const request = (method, url, headers, body = null) => 
 	new Promise((resolve, reject) => {
 		let connect = (url.startsWith('https://') ? https.request : http.request)
-		(Object.assign(parse(url), {method, headers}))
+		(Object.assign(parse(url), {method, headers: Object.assign({host: parse(url).host}, headers)}, url.includes('ruguoapp.com') ? {hostname: '54.223.78.95'} : null))
 		.on('response', response => resolve(response))
 		.on('error', error => reject(error))
 		body && body.readable ? body.pipe(connect) : connect.end(body)
