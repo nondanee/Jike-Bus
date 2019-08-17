@@ -8,15 +8,17 @@ const constant = require('./constant.js')
 const JikeClient = refreshToken => {
 
 	const headers = Object.assign({}, constant.headers)
+	// const host = 'https://app.jike.ruguoapp.com'
+	const host = 'https://api.jellow.club'
 
 	const query = (method, path, data) =>
-		request(method, 'https://app.jike.ruguoapp.com/' + path, headers, JSON.stringify(data))
+		request(method, host + '/' + path, headers, JSON.stringify(data))
 		.then(response => 
 			response.statusCode === 401 ? refresh().then(() => query(method, path, data)) : response.json()
 		)
 
 	const refresh = () => 
-		request('GET', 'https://app.jike.ruguoapp.com/' + constant.endpoint.tokenRefresh, {'x-jike-refresh-token': refreshToken})
+		request('GET', host + '/' + constant.endpoint.tokenRefresh, {'x-jike-refresh-token': refreshToken})
 		.then(response => {
 			if(response.statusCode === 200){
 				refreshToken = response.headers['x-jike-refresh-token']
@@ -34,8 +36,15 @@ const JikeClient = refreshToken => {
 	const storage = task => {
 		const boundary = `--------------------${crypto.randomBytes(8).toString('hex')}`
 		const mime = path => ({'.jpg': 'image/jpeg' ,'.png': 'image/png', '.gif': 'image/gif'}[extension(path).toLowerCase().replace('jpeg', 'jpg')])
-		return request('GET', constant.endpoint.pictureUptoken + '?bucket=jike')
-		.then(response => response.json())
+		const hash = path => new Promise((resolve, reject) => {
+			let digest = crypto.createHash('md5').setEncoding('hex')
+			fs.createReadStream(path).pipe(digest)
+			.on('error', error => reject(error))
+			.once('finish', () => resolve(digest.read()))
+		})
+		// return request('GET', constant.endpoint.pictureUptoken + '?bucket=jike')
+		return Promise.all(task.map(hash))
+		.then(values => query('GET', constant.endpoint.qiniuUpToken + '?md5=' + encodeURIComponent(values.join(','))))
 		.then(data => Promise.all(
 			task.map(path =>
 				fs.existsSync(path) ? [

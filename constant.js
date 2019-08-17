@@ -1,8 +1,15 @@
+// const headers = {
+//     'platform': 'web',
+//     'app-version': '5.3.0',
+//     'accept': 'application/json',
+//     'content-type': 'application/json'
+// }
+
 const headers = {
-    'platform': 'web',
-    'app-version': '5.3.0',
-    'accept': 'application/json',
-    'content-type': 'application/json'
+    'App-Version': '8.0.0',
+    'ApplicationId': 'io.iftech.jellow',
+    'Content-Type': 'application/json; charset=utf-8',
+    'User-Agent': 'okhttp/4.0.1',
 }
 
 const endpoint = {
@@ -10,7 +17,8 @@ const endpoint = {
     'createSession': 'sessions.create',
     'waitLogin': 'sessions.wait_for_login',
     'confirmLogin': 'sessions.wait_for_confirmation',
-    'tokenRefresh': 'app_auth_tokens.refresh',
+    // 'tokenRefresh': 'app_auth_tokens.refresh',
+    'tokenRefresh': '1.0/app_auth_tokens.refresh',
     // myself
     'myCollections': '1.0/users/collections/list',
     // main page info stream
@@ -34,8 +42,10 @@ const endpoint = {
     'createPost': '1.0/originalPosts/create',
     'deletePost': '1.0/originalPosts/remove',
     'extractLink': '1.0/readability/extract',
-    'pictureUptoken': 'https://upload.jike.ruguoapp.com/token',
-    'pictureUpload': 'https://up.qbox.me/',
+    'qiniuUpToken': '1.0/misc/qiniu_uptoken',
+    // 'pictureUptoken': 'https://upload.jike.ruguoapp.com/token',
+    // 'pictureUpload': 'https://up.qbox.me/',
+    'pictureUpload': 'https://upload.qiniup.com',
     // interaction
     // 'like_it': '1.0/{_p_}/like',
     // 'unlike_it': '1.0/{_p_}/unlike',
