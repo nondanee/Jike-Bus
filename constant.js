@@ -34,7 +34,8 @@ const endpoint = {
     'userFollower': '1.0/userRelation/getFollowerList',
     // topic
     'topicSelected': '1.0/messages/history',
-    'topicSquare': '1.0/squarePosts/list',
+    // 'topicSquare': '1.0/squarePosts/list',
+    'topicSquare': '1.0/topicFeed/list',
     // comment
     'listComment': '1.0/comments/listPrimary',
     'listCommentReply': '1.0/comments/list',
