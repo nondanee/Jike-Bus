@@ -14,20 +14,20 @@ $ npm install nondanee/Jike-Bus
 const jike = require('jike')
 
 ;(async () => {
-    let c = await jike.JikeClient(refreshToken)
+    let c = await jike.JikeClient(refreshToken, deviceId)
     let myProfile = await c.getMyProfile()
 })()
 ```
 
 ## Usage
 
-还未实现扫码登录部分，初始化客户端要求传入 `x-jike-refresh-token`
+还未实现扫码登录部分，初始化客户端要求传入 `x-jike-refresh-token`，部分用户需要传入 `x-jike-device-id` (原因未知)
 
 支持的接口请参考 [Sorosliu1029/Jike-Metro](https://github.com/Sorosliu1029/Jike-Metro) 的 [API 文档](https://www.0x2beace.me/Jike-Metro/)
 
 基本上把 Python 的下划线方法名改成驼峰命名就行了，返回类型均为 Promise (部分方法名有改动)
 
-分页信息流 `loadMore()`，`loadAll()` 与 Jike-Metro 功能一致 
+分页信息流 `loadMore()`，`loadAll()` 与 Jike Metro 功能一致 
 
 只是 Web API 请求的简单封装，比较丑陋，不关心返回字段改动 (不固定字段，全看官方心情)
 
@@ -47,7 +47,7 @@ const jike = require('jike')
 - 根据关键词搜索自己的收藏
 - 获取即刻首页的推荐关注主题列表（不限于首页显示的5个）
 
->  即 [Jike-Metro 乘车体验](https://github.com/Sorosliu1029/Jike-Metro#jike-metro--乘车体验) 中提到的所有 feature
+>  即 [Jike Metro 乘车体验](https://github.com/Sorosliu1029/Jike-Metro#jike-metro--乘车体验) 中提到的所有 feature
 
 ## Todo
 

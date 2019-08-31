@@ -5,7 +5,7 @@ const extension = require('path').extname
 const request = require('./request.js')
 const constant = require('./constant.js')
 
-const JikeClient = refreshToken => {
+const JikeClient = (refreshToken, deviceId) => {
 
 	const headers = Object.assign({}, constant.headers)
 	// const host = 'https://app.jike.ruguoapp.com'
@@ -18,11 +18,12 @@ const JikeClient = refreshToken => {
 		)
 
 	const refresh = () => 
-		request('GET', host + '/' + constant.endpoint.tokenRefresh, {'x-jike-refresh-token': refreshToken})
+		request('GET', host + '/' + constant.endpoint.tokenRefresh, Object.assign({'x-jike-refresh-token': refreshToken}, deviceId ? {'x-jike-device-id': deviceId} : null))
 		.then(response => {
 			if(response.statusCode === 200){
 				refreshToken = response.headers['x-jike-refresh-token']
 				headers['x-jike-access-token'] = response.headers['x-jike-access-token']
+				if(deviceId) headers['x-jike-device-id'] = deviceId
 			}
 			else{
 				return Promise.reject('Login required')
@@ -66,7 +67,7 @@ const JikeClient = refreshToken => {
 
 	const Flow = (path, parameter) => {
 		const flow = []
-		const load = () => 
+		const load = () =>
 			query('POST', path, parameter)
 			.then(data => {
 				if(data.loadMoreKey || flow.length > 1000){
