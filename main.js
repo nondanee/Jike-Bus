@@ -126,9 +126,7 @@ const JikeClient = (refreshToken, deviceId) => {
 		)
 	
 	return {
-		getMyProfile:
-			() => query('GET', constant.endpoint.userProfile).then(data => data.user),
-		getMyCollection:
+		getCollection:
 			() => Flow(constant.endpoint.myCollections, { limit: 20 }),
 		getNewsFeed:
 			() => Flow(constant.endpoint.newsFeed, { trigger: 'user' }, true),
@@ -137,7 +135,7 @@ const JikeClient = (refreshToken, deviceId) => {
 		getNewsFeedUnreadCount:
 			() => query('GET', constant.endpoint.newsFeedUnreadCount),
 		getUserProfile:
-			username => query('GET', constant.endpoint.userProfile + '?username=' + username).then(data => data.user),
+			username => query('GET', constant.endpoint.userProfile + `?username=${username || ''}`).then(data => data.user),
 		getUserPost:
 			username => Flow(constant.endpoint.userPost, { username, limit: 20 }),
 		getUserCreatedTopic:
@@ -168,7 +166,7 @@ const JikeClient = (refreshToken, deviceId) => {
 			message => collect(message, true),
 		uncollectIt:
 			message => collect(message, false),
-		createMyPost:
+		createPost:
 			(content, options = {}) =>
 				Promise.resolve()
 				.then(() => {
@@ -180,7 +178,7 @@ const JikeClient = (refreshToken, deviceId) => {
 					else return Promise.resolve(payload)
 				})
 				.then(payload => query('POST', constant.endpoint.createPost, payload)),
-		createMyRepost:
+		createRepost:
 			(content, message, options = {}) =>
 				validate(message, ['OFFICIAL_MESSAGE', 'ORIGINAL_POST', 'REPOST'])
 				.then(({ id, type }) => 
@@ -191,7 +189,7 @@ const JikeClient = (refreshToken, deviceId) => {
 						targetType: type
 					})
 				),
-		createMyComment:
+		createComment:
 			(content, message, options = {}) =>
 				validate(message)
 				.then(({ id, type }) => {
@@ -206,9 +204,9 @@ const JikeClient = (refreshToken, deviceId) => {
 					else return Promise.resolve(payload)
 				})
 				.then(payload => query('POST', constant.endpoint.createComment, payload)),
-		deleteMyPost:
+		deletePost:
 			message => validate(message, ['ORIGINAL_POST', 'REPOST']).then(({ id }) => query('POST', constant.endpoint.deletePost, { id })),
-		deleteMyComment:
+		deleteComment:
 			message => validate(message, ['COMMENT']).then(({ id, targetType }) => query('POST', constant.endpoint.deleteComment, { id, targetType })),
 		searchTopic:
 			keywords => Flow(constant.endpoint.searchTopic, { keywords, onlyUserPostEnabled: false, type: 'ALL' }),

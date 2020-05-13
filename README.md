@@ -15,8 +15,8 @@ const jike = require('jike')
 
 ;(async () => {
     const j = jike.JikeClient(refreshToken, deviceId)
-    const profile = await j.getMyProfile()
-    const myPost = await j.getUserPost(profile.username)
+    const myProfile = await j.getUserProfile()
+    const myPost = await j.getUserPost(myProfile.username)
     await j.likeIt(myPost[0]) // 😏
 })()
 ```
