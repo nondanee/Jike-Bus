@@ -8,14 +8,16 @@ Jike Bus 🚍 是即刻镇的公交专线，有卡刷卡，投币一元。
 $ npm install nondanee/Jike-Bus
 ```
 
-> 等 Todo 完成后再发布到 npm, 现阶段可以从 Github repository 安装尝鲜
+> ~~等 Todo 完成后再发布到 npm, 现阶段可以从 Github repository 安装尝鲜~~ 咕了
 
 ```javascript
 const jike = require('jike')
 
 ;(async () => {
-    let c = await jike.JikeClient(refreshToken, deviceId)
-    let myProfile = await c.getMyProfile()
+    const j = jike.JikeClient(refreshToken, deviceId)
+    const profile = await j.getMyProfile()
+    const myPost = await j.getUserPost(profile.username)
+    await j.likeIt(myPost[0]) // 😏
 })()
 ```
 
