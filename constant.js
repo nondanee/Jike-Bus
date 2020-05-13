@@ -62,4 +62,4 @@ const endpoint = {
     'recommendedTopic': '1.0/topics/recommendation/list',
 }
 
-module.exports = {headers, endpoint}
+module.exports = { headers, endpoint }
