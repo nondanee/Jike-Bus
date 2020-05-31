@@ -1,9 +1,13 @@
+// const host = 'https://app.jike.ruguoapp.com'
+
 // const headers = {
 //     'platform': 'web',
 //     'app-version': '5.3.0',
 //     'accept': 'application/json',
 //     'content-type': 'application/json'
 // }
+
+const host = 'https://api.jellow.club'
 
 const headers = {
     'App-Version': '8.0.0',
@@ -62,4 +66,4 @@ const endpoint = {
     'recommendedTopic': '1.0/topics/recommendation/list',
 }
 
-module.exports = { headers, endpoint }
+module.exports = { host, headers, endpoint }

@@ -8,24 +8,22 @@ const constant = require('./constant.js')
 const JikeClient = (refreshToken, deviceId) => {
 
 	const headers = Object.assign({}, constant.headers, { 'x-jike-device-id': deviceId || null })
-	// const host = 'https://app.jike.ruguoapp.com'
-	const host = 'https://api.jellow.club'
 
 	const query = (method, path, data) =>
-		request(method, host + '/' + path, headers, JSON.stringify(data))
+		request(method, constant.host + '/' + path, headers, JSON.stringify(data))
 		.then(response => 
 			response.statusCode === 401 ? refresh().then(() => query(method, path, data)) : response.json()
 		)
 
 	const refresh = () =>
-		request('GET', host + '/' + constant.endpoint.tokenRefresh, { 'x-jike-refresh-token': refreshToken, 'x-jike-device-id': deviceId || null })
+		request('GET', constant.host + '/' + constant.endpoint.tokenRefresh, { 'x-jike-refresh-token': refreshToken, 'x-jike-device-id': deviceId || null })
 		.then(response => {
 			if (response.statusCode === 200) {
 				refreshToken = response.headers['x-jike-refresh-token']
 				headers['x-jike-access-token'] = response.headers['x-jike-access-token']
 			}
 			else{
-				return Promise.reject('Login required')
+				return Promise.reject(new Error('TOKEN_FAILED: login required'))
 			}
 		})
 
@@ -53,7 +51,7 @@ const JikeClient = (refreshToken, deviceId) => {
 						{ key: 'token', value: data.uptoken }, 
 						{ key: 'file', value: path, type: 'file', mime: mime(path) }
 					]
-					: Promise.reject('file does not exist')
+					: Promise.reject(new Error('ENOENT: file does not exist'))
 			)
 			.map(data => 
 				request('POST', constant.endpoint.pictureUpload, { 'content-type': `multipart/form-data; boundary=${boundary}` }, request.form(data, boundary))
@@ -106,9 +104,9 @@ const JikeClient = (refreshToken, deviceId) => {
 			'COMMENT': 'comments',
 		}
 	
-		if (!id) return Promise.reject(new TypeError('Missing message id'))
-		if (!Object.keys(mapping).filter(key => !limit.length || limit.includes(key)).includes(type)) return Promise.reject(new TypeError('Unsupported message type'))
-		if (type === 'COMMENT' && !targetType) return Promise.reject(new TypeError('Missing message targetType'))
+		if (!id) return Promise.reject(new Error('BAD_MESSAGE: missing message id'))
+		if (!Object.keys(mapping).filter(key => !limit.length || limit.includes(key)).includes(type)) return Promise.reject(new Error('BAD_MESSAGE: unsupported message type'))
+		if (type === 'COMMENT' && !targetType) return Promise.reject(new Error('BAD_MESSAGE: missing message targetType'))
 		message.urlType = mapping[type]
 		return Promise.resolve(message)
 	}
@@ -170,7 +168,7 @@ const JikeClient = (refreshToken, deviceId) => {
 			(content, options = {}) =>
 				Promise.resolve()
 				.then(() => {
-					if (options.link && options.pictures) return Promise.reject(new TypeError('Unsupported post options'))
+					if (options.link && options.pictures) return Promise.reject(new Error('UNSUPPORTED_OPTIONS: link and pictures cannot coexist'))
 					const payload = { content }
 					if (options.topic) payload.submitToTopic = options.topic
 					if (options.link) return meta(options.link).then(info => payload.linkInfo = info).then(() => payload)
